@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>リニア新幹線クイズゲーム</title>
+    
+    <!-- スタイルシート -->
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <!-- QRコード生成ライブラリ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Canvas用ユーティリティ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <!-- パーティクルコンテナ -->
+    <div id="particle-container" class="particle-container"></div>
+    
+    <!-- 背景レイヤー -->
+    <div class="background-layer">
+        <canvas id="linear-background"></canvas>
+        <div class="neon-grid"></div>
+    </div>
+    
+    <!-- メインコンテンツ -->
+    <div class="main-container">
+        <!-- 待機画面 -->
+        <div id="waiting-screen" class="screen active">
+            <div class="waiting-content">
+                <div class="logo-area">
+                    <h1 class="neon-title">リニア新幹線</h1>
+                    <p class="neon-subtitle">クイズチャレンジ</p>
+                </div>
+                
+                <div class="info-panel">
+                    <div class="info-item">
+                        <span class="info-label">問題数</span>
+                        <span class="info-value">20問</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">制限時間</span>
+                        <span class="info-value">10秒/問</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">ランキング</span>
+                        <span class="info-value" id="current-rank">集計中...</span>
+                    </div>
+                </div>
+                
+                <button id="start-btn" class="btn btn-primary neon-btn">
+                    <span class="btn-text">ゲーム開始</span>
+                    <span class="btn-glow"></span>
+                </button>
+                
+                <button id="demo-btn" class="btn btn-secondary">
+                    <span class="btn-text">デモモード</span>
+                </button>
+                
+                <div class="qr-info">
+                    <p>スマートフォンで参加:</p>
+                    <div id="qr-code" class="qr-display"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ゲーム画面 -->
+        <div id="game-screen" class="screen">
+            <!-- ゲームヘッダー -->
+            <div class="game-header">
+                <div class="question-counter">
+                    <span id="current-question">1</span> / <span id="total-questions">20</span>
+                </div>
+                <div class="score-display">
+                    <span class="score-label">正解数</span>
+                    <span id="score-count" class="score-value">0</span>
+                </div>
+                <div class="timer-display">
+                    <div class="timer-circle">
+                        <svg viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" class="timer-background"></circle>
+                            <circle cx="50" cy="50" r="45" class="timer-progress" id="timer-progress"></circle>
+                        </svg>
+                        <span id="timer-value" class="timer-text">10</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- クイズコンテンツ -->
+            <div class="quiz-content">
+                <div class="question-box">
+                    <h2 id="question-text" class="question-text"></h2>
+                </div>
+                
+                <div class="options-grid" id="options-grid"></div>
+                
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 結果画面 -->
+        <div id="result-screen" class="screen">
+            <div class="result-content">
+                <h2 class="result-title">ゲーム終了</h2>
+                
+                <div class="result-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">正解数</span>
+                        <span id="final-correct" class="stat-value">0</span>
+                        <span class="stat-unit">/20問</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">スコア</span>
+                        <span id="final-score" class="stat-value">0</span>
+                        <span class="stat-unit">点</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">ランキング</span>
+                        <span id="final-rank" class="stat-value">-</span>
+                        <span class="stat-unit">位</span>
+                    </div>
+                </div>
+                
+                <div id="ranking-panel" class="ranking-panel">
+                    <h3>🏆 ランキング TOP10</h3>
+                    <div id="ranking-list" class="ranking-list"></div>
+                </div>
+                
+                <div class="result-actions">
+                    <button id="print-btn" class="btn btn-primary neon-btn">
+                        <span class="btn-text">🖨️ 印刷</span>
+                        <span class="btn-glow"></span>
+                    </button>
+                    <button id="retry-btn" class="btn btn-secondary">
+                        <span class="btn-text">もう一度</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 効果音 -->
+    <audio id="bgm" loop>
+        <source src="audio/bgm.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="correct-sound">
+        <source src="audio/correct.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="incorrect-sound">
+        <source src="audio/incorrect.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="countdown-sound">
+        <source src="audio/countdown.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="print-sound">
+        <source src="audio/print.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- JavaScriptモジュール -->
+    <script src="js/utils.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/animation.js"></script>
+    <script src="js/background.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/ranking.js"></script>
+    <script src="js/printer.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
