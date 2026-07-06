@@ -1,0 +1,568 @@
+/* ===== レスポンシブデザイン ===== */
+
+/* タブレット (768px以下) */
+@media (max-width: 768px) {
+    /* 基本 */
+    body {
+        font-size: 15px;
+    }
+    
+    /* ゲーム画面 */
+    .game-header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .timer-display {
+        width: 70px;
+        height: 70px;
+    }
+    
+    /* オプション */
+    .options-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .option {
+        padding: 18px;
+        font-size: 15px;
+    }
+    
+    /* クイズコンテンツ */
+    .quiz-content {
+        padding: 15px;
+    }
+    
+    .question-box {
+        padding: 20px;
+        min-height: 80px;
+        margin: 15px 0;
+    }
+    
+    .question-text {
+        font-size: 18px;
+    }
+    
+    /* 結果画面 */
+    .result-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .stat-item {
+        padding: 15px;
+    }
+    
+    .stat-value {
+        font-size: 24px;
+    }
+    
+    /* 待機画面 */
+    .waiting-content {
+        padding: 30px 15px;
+        max-width: 100%;
+    }
+    
+    .info-panel {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 15px;
+        margin: 20px 0;
+    }
+    
+    .info-item {
+        padding: 8px;
+    }
+    
+    .info-value {
+        font-size: 18px;
+    }
+    
+    /* QR コード */
+    .qr-display canvas {
+        max-width: 120px;
+    }
+    
+    /* ボタン */
+    .btn {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+    
+    .result-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .result-actions .btn {
+        width: 100%;
+    }
+    
+    /* 管理画面 */
+    .admin-header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .admin-title {
+        font-size: 24px;
+    }
+    
+    .admin-nav {
+        width: 100%;
+    }
+    
+    .nav-tab {
+        flex: 1;
+        font-size: 11px;
+        padding: 8px 12px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .stat-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .stat-icon {
+        font-size: 24px;
+    }
+    
+    /* テーブル */
+    .ranking-table,
+    .users-table {
+        font-size: 12px;
+    }
+    
+    .ranking-table th,
+    .ranking-table td,
+    .users-table th,
+    .users-table td {
+        padding: 10px 8px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .form-actions .btn {
+        width: 100%;
+    }
+}
+
+/* スマートフォン (480px以下) */
+@media (max-width: 480px) {
+    /* 基本 */
+    body {
+        font-size: 13px;
+    }
+    
+    /* タイトル */
+    .neon-title {
+        font-size: 24px;
+    }
+    
+    .neon-subtitle {
+        font-size: 14px;
+    }
+    
+    /* ゲーム画面 */
+    .game-header {
+        padding: 12px;
+        gap: 10px;
+    }
+    
+    .question-counter {
+        font-size: 14px;
+    }
+    
+    .score-value {
+        font-size: 20px;
+    }
+    
+    .timer-display {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .timer-text {
+        font-size: 18px;
+    }
+    
+    /* クイズコンテンツ */
+    .quiz-content {
+        padding: 10px;
+    }
+    
+    .question-box {
+        padding: 15px;
+        min-height: 70px;
+        margin: 10px 0;
+    }
+    
+    .question-text {
+        font-size: 15px;
+    }
+    
+    /* オプション */
+    .options-grid {
+        gap: 10px;
+        margin: 10px 0;
+        padding: 10px 0;
+    }
+    
+    .option {
+        padding: 14px;
+        font-size: 13px;
+        border-radius: 8px;
+    }
+    
+    /* 情報パネル */
+    .info-panel {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 12px;
+        margin: 15px 0;
+    }
+    
+    .info-item {
+        padding: 6px;
+    }
+    
+    .info-value {
+        font-size: 16px;
+    }
+    
+    /* 結果画面 */
+    .result-content {
+        padding: 20px 15px;
+    }
+    
+    .result-title {
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+    
+    .result-stats {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin: 20px 0;
+    }
+    
+    .stat-item {
+        padding: 12px;
+    }
+    
+    .stat-value {
+        font-size: 22px;
+    }
+    
+    .ranking-panel {
+        margin: 20px 0;
+        padding: 15px;
+    }
+    
+    .ranking-list {
+        max-height: 200px;
+    }
+    
+    /* ボタン */
+    .btn {
+        padding: 11px 18px;
+        font-size: 13px;
+    }
+    
+    .result-actions {
+        gap: 8px;
+    }
+    
+    .result-actions .btn {
+        flex: 1;
+    }
+    
+    /* QR コード */
+    .qr-info {
+        margin-top: 30px;
+        padding: 15px;
+    }
+    
+    .qr-display canvas {
+        max-width: 100px;
+    }
+    
+    /* 管理画面 */
+    .admin-header {
+        padding: 15px;
+    }
+    
+    .admin-title {
+        font-size: 20px;
+    }
+    
+    .admin-content {
+        padding: 15px 10px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .stat-card {
+        padding: 15px;
+        gap: 10px;
+    }
+    
+    .stat-icon {
+        font-size: 28px;
+    }
+    
+    .stat-info .stat-value {
+        font-size: 20px;
+    }
+    
+    /* テーブル */
+    .ranking-table-wrapper,
+    .users-table-wrapper {
+        margin-bottom: 15px;
+    }
+    
+    .ranking-table,
+    .users-table {
+        font-size: 11px;
+    }
+    
+    .ranking-table th,
+    .ranking-table td,
+    .users-table th,
+    .users-table td {
+        padding: 8px 6px;
+    }
+    
+    /* フォーム */
+    .settings-form,
+    .wifi-settings {
+        padding: 15px;
+    }
+    
+    .form-group {
+        margin-bottom: 12px;
+    }
+    
+    .form-group label {
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+    
+    .ranking-controls,
+    .users-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .ranking-controls h3,
+    .users-controls h3 {
+        margin-bottom: 10px;
+    }
+    
+    .search-input {
+        width: 100%;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .form-actions .btn {
+        width: 100%;
+        padding: 10px;
+    }
+    
+    /* ディスプレイ */
+    .display-content {
+        padding: 20px 10px;
+    }
+    
+    .display-header h1 {
+        font-size: 32px;
+    }
+    
+    .display-header .neon-subtitle {
+        font-size: 16px;
+    }
+    
+    .ranking-item {
+        padding: 15px;
+        margin: 8px 0;
+    }
+    
+    .rank-number {
+        font-size: 20px;
+        min-width: 40px;
+    }
+    
+    .rank-info {
+        padding: 0 10px;
+    }
+    
+    .rank-name {
+        font-size: 14px;
+    }
+    
+    .rank-score {
+        font-size: 13px;
+    }
+    
+    .rank-medal {
+        font-size: 24px;
+    }
+}
+
+/* 超小型スマートフォン (360px以下) */
+@media (max-width: 360px) {
+    .neon-title {
+        font-size: 20px;
+    }
+    
+    .result-title {
+        font-size: 26px;
+    }
+    
+    .option {
+        padding: 12px;
+        font-size: 12px;
+    }
+    
+    .btn {
+        padding: 10px 14px;
+        font-size: 12px;
+    }
+}
+
+/* ランドスケープ (高さ制限) */
+@media (max-height: 500px) and (orientation: landscape) {
+    .question-box {
+        min-height: auto;
+        padding: 15px;
+    }
+    
+    .question-text {
+        font-size: 14px;
+    }
+    
+    .option {
+        padding: 12px;
+    }
+    
+    .game-header {
+        padding: 10px;
+        gap: 8px;
+    }
+    
+    .timer-display {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+/* 印刷スタイル */
+@media print {
+    body {
+        background: white;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .particle-container,
+    .background-layer,
+    .admin-header,
+    .preview-controls,
+    .rotation-toggle {
+        display: none !important;
+    }
+    
+    .print-preview {
+        box-shadow: none;
+        border: none;
+        page-break-after: always;
+    }
+    
+    .neon-btn,
+    .btn {
+        border: 1px solid #000;
+        background: white !important;
+        color: #000 !important;
+        text-shadow: none !important;
+    }
+}
+
+/* ダークモード対応 */
+@media (prefers-color-scheme: dark) {
+    /* これは既にデフォルトです */
+}
+
+/* ライトモード対応 */
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg-darker: #f5f5f5;
+        --bg-dark: #ffffff;
+        --bg-card: #e8e8e8;
+        --text-primary: #000000;
+        --text-secondary: #333333;
+        --text-muted: #666666;
+    }
+}
+
+/* 高コントラストモード */
+@media (prefers-contrast: more) {
+    :root {
+        --neon-primary: #0f0;
+        --neon-secondary: #0ff;
+        --border-color: rgba(0, 255, 65, 0.5);
+        --border-bright: rgba(0, 212, 255, 0.5);
+    }
+}
+
+/* リデュースモーション */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* タッチデバイス最適化 */
+@media (hover: none) and (pointer: coarse) {
+    .btn {
+        padding: 16px 32px;
+        font-size: 18px;
+        min-height: 48px;
+    }
+    
+    .option {
+        min-height: 60px;
+        padding: 24px;
+    }
+    
+    .nav-tab {
+        min-height: 44px;
+    }
+}

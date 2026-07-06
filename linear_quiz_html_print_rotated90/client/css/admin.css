@@ -1,0 +1,491 @@
+/* ===== 管理画面共通スタイル ===== */
+.admin-body {
+    overflow: auto;
+}
+
+.admin-container {
+    width: 100%;
+    min-height: 100vh;
+    background: var(--bg-darker);
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-grid {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(0deg, transparent 24%, rgba(0, 255, 65, 0.03) 25%, rgba(0, 255, 65, 0.03) 26%, transparent 27%, transparent 74%, rgba(0, 255, 65, 0.03) 75%, rgba(0, 255, 65, 0.03) 76%, transparent 77%, transparent),
+        linear-gradient(90deg, transparent 24%, rgba(0, 212, 255, 0.03) 25%, rgba(0, 212, 255, 0.03) 26%, transparent 27%, transparent 74%, rgba(0, 212, 255, 0.03) 75%, rgba(0, 212, 255, 0.03) 76%, transparent 77%, transparent);
+    background-size: 80px 80px;
+    pointer-events: none;
+}
+
+/* ===== 管理画面ヘッダー ===== */
+.admin-header {
+    background: rgba(26, 31, 58, 0.9);
+    border-bottom: 2px solid var(--border-bright);
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.admin-header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.admin-title {
+    font-size: 28px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+}
+
+/* ===== ナビゲーションタブ ===== */
+.admin-nav {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.nav-tab {
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.nav-tab:hover {
+    background: rgba(0, 212, 255, 0.1);
+    border-color: var(--neon-secondary);
+    color: var(--neon-secondary);
+}
+
+.nav-tab.active {
+    background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
+    color: var(--bg-dark);
+    border-color: var(--neon-primary);
+    box-shadow: var(--glow-primary);
+}
+
+/* ===== 管理画面コンテンツ ===== */
+.admin-content {
+    flex: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 30px 20px;
+}
+
+.admin-tab {
+    display: none;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.admin-tab.active {
+    display: block;
+}
+
+/* ===== 統計カード ===== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: rgba(26, 31, 58, 0.6);
+    border: 1px solid var(--border-bright);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all var(--transition-normal);
+}
+
+.stat-card:hover {
+    background: rgba(26, 31, 58, 0.8);
+    border-color: var(--neon-secondary);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+    transform: translateY(-3px);
+}
+
+.stat-icon {
+    font-size: 32px;
+    min-width: 40px;
+}
+
+.stat-info {
+    flex: 1;
+}
+
+.stat-info .stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.stat-info .stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--neon-primary);
+    text-shadow: var(--glow-primary);
+}
+
+/* ===== チャートセクション ===== */
+.chart-section {
+    background: rgba(26, 31, 58, 0.6);
+    border: 1px solid var(--border-bright);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.chart-section h3 {
+    margin-bottom: 20px;
+    color: var(--neon-secondary);
+    text-shadow: var(--glow-secondary);
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+}
+
+/* ===== ランキングコントロール ===== */
+.ranking-controls,
+.users-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.ranking-controls h3,
+.users-controls h3 {
+    margin: 0;
+    color: var(--neon-secondary);
+    text-shadow: var(--glow-secondary);
+}
+
+.search-input {
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 14px;
+    transition: all var(--transition-normal);
+}
+
+.search-input:focus {
+    outline: none;
+    background: rgba(0, 212, 255, 0.1);
+    border-color: var(--neon-secondary);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+}
+
+.search-input::placeholder {
+    color: var(--text-muted);
+}
+
+/* ===== テーブル ===== */
+.ranking-table-wrapper,
+.users-table-wrapper {
+    overflow-x: auto;
+    background: rgba(26, 31, 58, 0.6);
+    border: 1px solid var(--border-bright);
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.ranking-table,
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.ranking-table thead,
+.users-table thead {
+    background: rgba(0, 212, 255, 0.1);
+    border-bottom: 2px solid var(--border-bright);
+}
+
+.ranking-table th,
+.users-table th {
+    padding: 15px;
+    text-align: left;
+    color: var(--neon-secondary);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+}
+
+.ranking-table tbody tr,
+.users-table tbody tr {
+    border-bottom: 1px solid rgba(0, 255, 65, 0.1);
+    transition: all var(--transition-normal);
+}
+
+.ranking-table tbody tr:hover,
+.users-table tbody tr:hover {
+    background: rgba(0, 255, 65, 0.05);
+}
+
+.ranking-table td,
+.users-table td {
+    padding: 12px 15px;
+    color: var(--text-primary);
+}
+
+.ranking-table td:first-child {
+    font-weight: 700;
+    color: var(--neon-primary);
+}
+
+/* ===== 設定フォーム ===== */
+.settings-form,
+.wifi-settings {
+    background: rgba(26, 31, 58, 0.6);
+    border: 1px solid var(--border-bright);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.settings-form h3,
+.wifi-settings h3 {
+    margin-bottom: 20px;
+    color: var(--neon-secondary);
+    text-shadow: var(--glow-secondary);
+}
+
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group textarea {
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-family: inherit;
+    transition: all var(--transition-normal);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    background: rgba(0, 212, 255, 0.1);
+    border-color: var(--neon-secondary);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+}
+
+.form-group.checkbox {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-group.checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--neon-primary);
+}
+
+.form-group.checkbox label {
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* ===== モーダルダイアログ ===== */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-modal);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-normal);
+}
+
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: var(--bg-card);
+    border: 2px solid var(--border-bright);
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 0 40px rgba(0, 212, 255, 0.3);
+    animation: slideUp 0.3s ease-out;
+}
+
+.modal-content h3 {
+    margin-bottom: 15px;
+    color: var(--neon-secondary);
+    font-size: 20px;
+}
+
+.modal-content p {
+    margin-bottom: 20px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* ===== ディスプレイモード ===== */
+.display-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: var(--z-content);
+}
+
+.display-content {
+    text-align: center;
+    padding: 40px 20px;
+    max-width: 800px;
+    width: 100%;
+}
+
+.display-header {
+    margin-bottom: 40px;
+}
+
+.display-header h1 {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.display-header .neon-subtitle {
+    font-size: 24px;
+}
+
+.ranking-display {
+    margin: 40px 0;
+}
+
+.ranking-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin: 10px 0;
+    background: rgba(26, 31, 58, 0.6);
+    border-left: 4px solid var(--neon-primary);
+    border-radius: 8px;
+    animation: slideInLeft 0.5s ease-out backwards;
+}
+
+.ranking-item.rank-1 { border-left-color: #ffd700; }
+.ranking-item.rank-2 { border-left-color: #c0c0c0; }
+.ranking-item.rank-3 { border-left-color: #cd7f32; }
+
+.rank-number {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--neon-secondary);
+    min-width: 50px;
+}
+
+.rank-info {
+    flex: 1;
+    text-align: left;
+    padding: 0 20px;
+}
+
+.rank-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.rank-score {
+    font-size: 16px;
+    color: var(--text-secondary);
+}
+
+.rank-medal {
+    font-size: 32px;
+}
+
+.display-footer {
+    margin-top: 40px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.display-footer p {
+    margin: 5px 0;
+}
+
+.refresh-hint {
+    color: var(--text-muted);
+    font-size: 12px;
+}
