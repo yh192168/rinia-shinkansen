@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>印刷プレビュー - リニア新幹線クイズ</title>
+    
+    <link rel="stylesheet" href="css/theme.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+        
+        .preview-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .preview-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
+            border-radius: 10px;
+            color: var(--bg-dark);
+        }
+        
+        .preview-header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .print-preview {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0, 255, 65, 0.2);
+            transform: rotate(0deg);
+            page-break-after: always;
+        }
+        
+        .print-preview.rotated {
+            transform: rotate(90deg);
+            max-width: 420px;
+            max-height: 620px;
+            margin: 40px auto;
+        }
+        
+        .preview-title {
+            text-align: center;
+            font-size: 24px;
+            color: #000;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .preview-content {
+            color: #000;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        
+        .preview-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            border-bottom: 1px solid #ccc;
+            padding: 8px 0;
+        }
+        
+        .preview-label {
+            font-weight: bold;
+            min-width: 120px;
+        }
+        
+        .preview-value {
+            text-align: right;
+            flex: 1;
+        }
+        
+        .preview-qr {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #000;
+        }
+        
+        .preview-qr canvas {
+            max-width: 150px;
+        }
+        
+        .preview-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
+            color: var(--bg-dark);
+        }
+        
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--neon-primary);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid var(--neon-secondary);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .rotation-toggle {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .rotation-toggle input {
+            margin-right: 10px;
+        }
+        
+        @media print {
+            body {
+                padding: 0;
+                background: white;
+            }
+            .preview-header,
+            .preview-controls,
+            .rotation-toggle {
+                display: none;
+            }
+            .print-preview {
+                box-shadow: none;
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <div class="preview-header">
+            <h1>🖨️ 印刷プレビュー</h1>
+            <p>確認してから印刷してください</p>
+        </div>
+        
+        <div class="rotation-toggle">
+            <input type="checkbox" id="rotate-checkbox">
+            <label for="rotate-checkbox">90度回転（Brother QL-800用）</label>
+        </div>
+        
+        <div id="print-preview" class="print-preview">
+            <div class="preview-title">リニア新幹線クイズ</div>
+            <div class="preview-content">
+                <div class="preview-row">
+                    <span class="preview-label">プレイヤー名</span>
+                    <span class="preview-value" id="preview-name">-</span>
+                </div>
+                <div class="preview-row">
+                    <span class="preview-label">スコア</span>
+                    <span class="preview-value" id="preview-score">0 点</span>
+                </div>
+                <div class="preview-row">
+                    <span class="preview-label">正解数</span>
+                    <span class="preview-value" id="preview-correct">0 / 20 問</span>
+                </div>
+                <div class="preview-row">
+                    <span class="preview-label">正答率</span>
+                    <span class="preview-value" id="preview-accuracy">0 %</span>
+                </div>
+                <div class="preview-row">
+                    <span class="preview-label">ランキング</span>
+                    <span class="preview-value" id="preview-rank">-</span>
+                </div>
+                <div class="preview-row">
+                    <span class="preview-label">日時</span>
+                    <span class="preview-value" id="preview-date">-</span>
+                </div>
+                
+                <div class="preview-qr">
+                    <p style="margin-bottom: 10px; font-size: 12px;">参加コード</p>
+                    <div id="preview-qr-code"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="preview-controls">
+            <button id="print-btn" class="btn btn-primary">🖨️ 印刷</button>
+            <button id="pdf-btn" class="btn btn-primary">📄 PDF保存</button>
+            <button id="close-btn" class="btn btn-secondary">キャンセル</button>
+        </div>
+    </div>
+    
+    <!-- QRコード生成用スクリプト -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <script>
+        class PrintPreview {
+            constructor() {
+                this.gameData = this.loadFromStorage();
+                this.init();
+            }
+            
+            init() {
+                this.displayData();
+                this.setupEventListeners();
+            }
+            
+            loadFromStorage() {
+                const data = sessionStorage.getItem('gameResult');
+                return data ? JSON.parse(data) : {};
+            }
+            
+            displayData() {
+                const {
+                    playerName = 'Guest',
+                    score = 0,
+                    correct = 0,
+                    total = 20,
+                    rank = '-',
+                    timestamp = new Date().toLocaleString('ja-JP')
+                } = this.gameData;
+                
+                document.getElementById('preview-name').textContent = playerName;
+                document.getElementById('preview-score').textContent = `${score} 点`;
+                document.getElementById('preview-correct').textContent = `${correct} / ${total} 問`;
+                
+                const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+                document.getElementById('preview-accuracy').textContent = `${accuracy} %`;
+                document.getElementById('preview-rank').textContent = rank !== '-' ? `第 ${rank} 位` : '-';
+                document.getElementById('preview-date').textContent = timestamp;
+                
+                // QRコード生成
+                this.generateQRCode(playerName);
+            }
+            
+            generateQRCode(text) {
+                const qrContainer = document.getElementById('preview-qr-code');
+                qrContainer.innerHTML = '';
+                new QRCode(qrContainer, {
+                    text: text,
+                    width: 150,
+                    height: 150,
+                    colorDark: '#000000',
+                    colorLight: '#ffffff'
+                });
+            }
+            
+            setupEventListeners() {
+                document.getElementById('rotate-checkbox').addEventListener('change', (e) => {
+                    const preview = document.getElementById('print-preview');
+                    if (e.target.checked) {
+                        preview.classList.add('rotated');
+                    } else {
+                        preview.classList.remove('rotated');
+                    }
+                });
+                
+                document.getElementById('print-btn').addEventListener('click', () => {
+                    window.print();
+                });
+                
+                document.getElementById('pdf-btn').addEventListener('click', () => {
+                    this.downloadPDF();
+                });
+                
+                document.getElementById('close-btn').addEventListener('click', () => {
+                    window.close();
+                });
+            }
+            
+            downloadPDF() {
+                const element = document.getElementById('print-preview');
+                const opt = {
+                    margin: 10,
+                    filename: 'リニアクイズ成績.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+                };
+                html2pdf().set(opt).from(element).save();
+            }
+        }
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            new PrintPreview();
+        });
+    </script>
+</body>
+</html>
