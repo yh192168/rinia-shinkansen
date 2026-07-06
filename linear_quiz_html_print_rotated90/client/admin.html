@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理画面 - リニア新幹線クイズ</title>
+    
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="admin-body">
+    <!-- パーティクルコンテナ -->
+    <div id="particle-container" class="particle-container"></div>
+    
+    <!-- 背景 -->
+    <div class="background-layer">
+        <div class="admin-grid"></div>
+    </div>
+    
+    <!-- 管理画面メインコンテナ -->
+    <div class="admin-container">
+        <!-- ヘッダー -->
+        <header class="admin-header">
+            <div class="admin-header-content">
+                <h1 class="admin-title">管理パネル</h1>
+                <div class="admin-nav">
+                    <button class="nav-tab active" data-tab="dashboard">ダッシュボード</button>
+                    <button class="nav-tab" data-tab="ranking">ランキング</button>
+                    <button class="nav-tab" data-tab="settings">設定</button>
+                    <button class="nav-tab" data-tab="users">ユーザー</button>
+                </div>
+            </div>
+        </header>
+        
+        <!-- メインコンテンツ -->
+        <main class="admin-content">
+            <!-- ダッシュボード -->
+            <div id="dashboard-tab" class="admin-tab active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🎮</div>
+                        <div class="stat-info">
+                            <p class="stat-label">本日のプレイ数</p>
+                            <p class="stat-value" id="today-plays">0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <p class="stat-label">登録ユーザー</p>
+                            <p class="stat-value" id="total-users">0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-info">
+                            <p class="stat-label">平均スコア</p>
+                            <p class="stat-value" id="avg-score">0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">🖨️</div>
+                        <div class="stat-info">
+                            <p class="stat-label">本日の印刷数</p>
+                            <p class="stat-value" id="today-prints">0</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-section">
+                    <h3>統計情報</h3>
+                    <div id="stats-chart" class="chart-container">
+                        <canvas id="stats-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ランキングタブ -->
+            <div id="ranking-tab" class="admin-tab">
+                <div class="ranking-controls">
+                    <h3>ランキング管理</h3>
+                    <button id="refresh-ranking-btn" class="btn btn-secondary">更新</button>
+                    <button id="export-ranking-btn" class="btn btn-secondary">エクスポート</button>
+                    <button id="clear-ranking-btn" class="btn btn-danger">クリア</button>
+                </div>
+                
+                <div class="ranking-table-wrapper">
+                    <table class="ranking-table" id="ranking-table">
+                        <thead>
+                            <tr>
+                                <th>順位</th>
+                                <th>プレイヤー名</th>
+                                <th>スコア</th>
+                                <th>正解数</th>
+                                <th>日時</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ranking-tbody">
+                            <!-- JavaScript で動的に生成 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- 設定タブ -->
+            <div id="settings-tab" class="admin-tab">
+                <div class="settings-form">
+                    <h3>ゲーム設定</h3>
+                    
+                    <div class="form-group">
+                        <label for="questions-count">問題数</label>
+                        <input type="number" id="questions-count" min="1" max="50" value="20">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="time-per-question">1問あたりの時間 (秒)</label>
+                        <input type="number" id="time-per-question" min="5" max="60" value="10">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="demo-interval">デモモード間隔 (分)</label>
+                        <input type="number" id="demo-interval" min="1" max="60" value="5">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="print-score-threshold">印刷対象スコア (以上)</label>
+                        <input type="number" id="print-score-threshold" min="0" max="100" value="60">
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="enable-sound" checked>
+                        <label for="enable-sound">効果音を有効</label>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="enable-particles" checked>
+                        <label for="enable-particles">パーティクルを有効</label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button id="save-settings-btn" class="btn btn-primary">保存</button>
+                        <button id="reset-settings-btn" class="btn btn-secondary">リセット</button>
+                    </div>
+                </div>
+                
+                <div class="wifi-settings">
+                    <h3>Wi-Fi 設定</h3>
+                    <div class="form-group">
+                        <label for="cloudflare-tunnel-url">Cloudflare Tunnel URL</label>
+                        <input type="text" id="cloudflare-tunnel-url" placeholder="https://game.example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="api-endpoint">API エンドポイント</label>
+                        <input type="text" id="api-endpoint" placeholder="http://localhost:5000">
+                    </div>
+                    <button id="test-connection-btn" class="btn btn-secondary">接続テスト</button>
+                </div>
+            </div>
+            
+            <!-- ユーザータブ -->
+            <div id="users-tab" class="admin-tab">
+                <div class="users-controls">
+                    <h3>ユーザー管理</h3>
+                    <input type="search" id="user-search" placeholder="ユーザー検索..." class="search-input">
+                </div>
+                
+                <div class="users-table-wrapper">
+                    <table class="users-table" id="users-table">
+                        <thead>
+                            <tr>
+                                <th>ユーザーID</th>
+                                <th>名前</th>
+                                <th>プレイ回数</th>
+                                <th>ハイスコア</th>
+                                <th>登録日</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-tbody">
+                            <!-- JavaScript で動的に生成 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- モーダルダイアログ -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="modal-title">確認</h3>
+            <p id="modal-message"></p>
+            <div class="modal-actions">
+                <button id="modal-confirm" class="btn btn-primary">OK</button>
+                <button id="modal-cancel" class="btn btn-secondary">キャンセル</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="js/utils.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ランキング表示 - リニア新幹線クイズ</title>
+    
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <!-- パーティクルコンテナ -->
+    <div id="particle-container" class="particle-container"></div>
+    
+    <!-- 背景レイヤー -->
+    <div class="background-layer">
+        <canvas id="linear-background"></canvas>
+        <div class="neon-grid"></div>
+    </div>
+    
+    <!-- ランキング表示コンテナ -->
+    <div class="display-container">
+        <div class="display-content">
+            <div class="display-header">
+                <h1 class="neon-title">ハイスコア</h1>
+                <p class="neon-subtitle">🏆 リニア新幹線クイズ TOP 10</p>
+            </div>
+            
+            <div id="ranking-display" class="ranking-display">
+                <!-- JavaScript で動的に生成 -->
+            </div>
+            
+            <div class="display-footer">
+                <p id="update-time">更新時刻: -</p>
+                <p class="refresh-hint">自動更新: 10秒ごと</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="js/utils.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/animation.js"></script>
+    <script src="js/background.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/ranking.js"></script>
+    <script>
+        // ランキング表示画面専用スクリプト
+        class RankingDisplay {
+            constructor() {
+                this.updateInterval = 10000; // 10秒ごと
+                this.init();
+            }
+            
+            async init() {
+                // 背景アニメーション初期化
+                if (window.LinearBackground) {
+                    new LinearBackground();
+                }
+                if (window.ParticleSystem) {
+                    window.particleSystem = new ParticleSystem('particle-container');
+                }
+                
+                this.loadRanking();
+                setInterval(() => this.loadRanking(), this.updateInterval);
+            }
+            
+            async loadRanking() {
+                try {
+                    const response = await fetch('/api/ranking/list');
+                    const data = await response.json();
+                    this.displayRanking(data.data || []);
+                    this.updateTime();
+                } catch (error) {
+                    console.error('ランキング読み込みエラー:', error);
+                }
+            }
+            
+            displayRanking(rankings) {
+                const container = document.getElementById('ranking-display');
+                container.innerHTML = '';
+                
+                rankings.slice(0, 10).forEach((item, index) => {
+                    const rankElement = document.createElement('div');
+                    rankElement.className = `ranking-item rank-${index + 1}`;
+                    rankElement.style.animationDelay = `${index * 0.1}s`;
+                    
+                    rankElement.innerHTML = `
+                        <div class="rank-number">${index + 1}</div>
+                        <div class="rank-info">
+                            <div class="rank-name">${item.name}</div>
+                            <div class="rank-score">${item.score} 点</div>
+                        </div>
+                        <div class="rank-medal">${this.getMedalEmoji(index)}</div>
+                    `;
+                    
+                    container.appendChild(rankElement);
+                });
+            }
+            
+            getMedalEmoji(index) {
+                const medals = ['🥇', '🥈', '🥉'];
+                return medals[index] || '⭐';
+            }
+            
+            updateTime() {
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString('ja-JP');
+                document.getElementById('update-time').textContent = `更新時刻: ${timeStr}`;
+            }
+        }
+        
+        // ページロード時に初期化
+        window.addEventListener('DOMContentLoaded', () => {
+            new RankingDisplay();
+        });
+    </script>
+</body>
+</html>
